@@ -1,0 +1,98 @@
+:root{--fondo:#eef1f4;--papel:#fff;--tinta:#1b2a38;--suave:#5b6b7a;--linea:#cfd7de;--asfalto:#1b2a38;--senal:#f2b600;--libre:#2f8f5b;--error:#b3261e}
+*{box-sizing:border-box}
+html{height:100%}
+body{margin:0;min-height:100%;background:var(--fondo);color:var(--tinta);font:16px/1.5 "Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",sans-serif}
+[hidden]{display:none!important}
+h1,h2{margin:0;line-height:1.2}
+h2{font-size:1.125rem;margin-bottom:.75rem}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--senal);outline-offset:2px}
+.btn{background:var(--asfalto);color:#fff;border:0;border-radius:6px;padding:.6rem 1.1rem;font-weight:700;cursor:pointer}
+.btn:hover{background:#2c4156}
+.btn.sec{background:transparent;color:var(--tinta);border:1px solid var(--linea)}
+.btn.sm{padding:.25rem .6rem;font-size:.875rem}
+label{display:block;font-weight:700;font-size:.9rem;margin:.75rem 0 .25rem}
+input,select{width:100%;padding:.55rem .65rem;border:1px solid var(--linea);border-radius:6px;background:#fff}
+.msg{min-height:1.4em;margin:.75rem 0 0;font-size:.9rem;color:var(--error)}
+.msg.ok{color:var(--libre)}
+
+/* login */
+#login{max-width:420px;margin:12vh auto;padding:2rem;background:var(--papel);border:1px solid var(--linea);border-top:6px solid var(--senal);border-radius:6px}
+#login p{color:var(--suave);margin:.5rem 0 1rem}
+
+/* barra superior */
+header{background:var(--asfalto);color:#fff;padding:.9rem 1.25rem;display:flex;flex-wrap:wrap;gap:.75rem;align-items:center;justify-content:space-between}
+header h1{font-size:1.25rem}
+header .quien{display:flex;gap:.75rem;align-items:center;font-size:.9rem}
+.rol{background:var(--senal);color:var(--asfalto);font-weight:700;border-radius:4px;padding:.1rem .5rem}
+header .btn.sec{color:#fff;border-color:#5b6b7a}
+
+/* semáforo */
+#estado{display:flex;align-items:center;gap:.9rem;padding:.85rem 1.25rem;background:var(--papel);border:1px solid var(--linea);border-radius:6px;margin-bottom:1.5rem;font-weight:700}
+.luz{width:18px;height:18px;border-radius:50%;background:var(--libre);flex:none;box-shadow:0 0 0 4px #2f8f5b33}
+.luz.ocupado{background:var(--senal);box-shadow:0 0 0 4px #f2b60044}
+
+/* pestañas */
+nav#tabs{display:flex;gap:.25rem;padding:.5rem 1.25rem 0;background:var(--asfalto)}
+.tab{background:transparent;color:#cfd7de;border:0;border-radius:6px 6px 0 0;padding:.55rem 1.1rem;font-weight:700;cursor:pointer}
+.tab:hover{color:#fff}
+.tab.activa{background:var(--fondo);color:var(--tinta)}
+
+/* distribución */
+main{max-width:1100px;margin:0 auto;padding:1.5rem 1.25rem 3rem}
+.dos-col{display:grid;grid-template-columns:minmax(0,340px) minmax(0,1fr);gap:1.5rem;align-items:start}
+@media(max-width:860px){.dos-col{grid-template-columns:1fr}}
+section{background:var(--papel);border:1px solid var(--linea);border-radius:6px;padding:1.1rem 1.25rem;margin-bottom:1.5rem}
+.nota{color:var(--suave);font-size:.9rem;margin:0}
+.cab-detalle{display:flex;flex-wrap:wrap;gap:.75rem;align-items:center;justify-content:space-between;margin-bottom:.75rem}
+.cab-detalle h2{margin:0}
+h3{font-size:1rem;margin:1.25rem 0 .5rem}
+dl.datos{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.75rem;margin:0}
+dl.datos dt{font-size:.8rem;color:var(--suave);font-weight:700}
+dl.datos dd{margin:0;font-weight:700}
+pre#detalleRes{background:#f6f8fa;border:1px solid var(--linea);border-radius:6px;padding:.75rem;overflow-x:auto;font-size:.85rem;margin:0}
+
+/* tablas */
+.scroll{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:.9rem}
+th,td{text-align:left;padding:.45rem .6rem;border-bottom:1px solid var(--linea);white-space:nowrap}
+th{font-weight:700;background:#f6f8fa}
+td.num{text-align:right;font-variant-numeric:tabular-nums}
+.pill{display:inline-block;border-radius:4px;padding:0 .45rem;font-size:.8rem;font-weight:700;background:#e3e8ed}
+.pill.en_ejecucion{background:var(--senal)}
+.pill.terminada{background:#d3ecdc;color:#1d5c3a}
+.pill.error{background:#f6d5d2;color:var(--error)}
+.filtros{display:flex;flex-wrap:wrap;gap:.75rem;align-items:end;margin-bottom:1rem}
+.filtros div{flex:1;max-width:260px}
+.filtros label{margin-top:0}
+.grafica{position:relative;height:250px}
+#speedup{margin:.75rem 0 0;font-weight:700}
+
+/* mesa de ayuda */
+tr.vencido td{background:#fbe9e7}
+tr.vencido td:nth-child(5){color:var(--error);font-weight:700}
+
+/* avisos y ventana de caso */
+#aviso{background:#fbe9e7;color:var(--error);font-weight:700;padding:.6rem 1.25rem;border-bottom:1px solid var(--linea)}
+dialog{width:min(640px,calc(100vw - 2rem));max-height:calc(100vh - 2rem);overflow-y:auto;border:1px solid var(--linea);border-top:6px solid var(--senal);border-radius:6px;padding:1.1rem 1.25rem;color:var(--tinta)}
+dialog::backdrop{background:#1b2a3899}
+dialog p{margin:0}
+pre#dlgConv{background:#f6f8fa;border:1px solid var(--linea);border-radius:6px;padding:.75rem;overflow-x:auto;white-space:pre-wrap;font:inherit;font-size:.9rem;margin:0}
+textarea{width:100%;padding:.55rem .65rem;border:1px solid var(--linea);border-radius:6px;background:#fff;font:inherit;resize:vertical}
+.acciones{display:flex;flex-wrap:wrap;gap:.5rem;justify-content:flex-end;margin-top:.75rem}
+.nota.err{color:var(--error)}
+.vencidos{color:var(--error);font-weight:700}
+.pill.abierto{background:#e3e8ed}
+.pill.en_proceso{background:#fde9a8}
+.pill.cerrado{background:#d3ecdc;color:#1d5c3a}
+
+/* chatbot */
+.chat-btn{position:fixed;right:1.25rem;bottom:1.25rem;background:var(--senal);color:var(--asfalto);border:0;border-radius:999px;padding:.75rem 1.25rem;font-weight:700;cursor:pointer;box-shadow:0 2px 8px #0003}
+#chat{position:fixed;right:1.25rem;bottom:4.75rem;width:min(360px,calc(100vw - 2.5rem));max-height:70vh;display:flex;flex-direction:column;background:var(--papel);border:1px solid var(--linea);border-top:5px solid var(--senal);border-radius:6px;box-shadow:0 4px 16px #0003}
+.chat-cab{display:flex;justify-content:space-between;align-items:center;padding:.6rem .8rem;border-bottom:1px solid var(--linea)}
+#chatMsgs{flex:1;overflow-y:auto;padding:.75rem;display:flex;flex-direction:column;gap:.5rem;min-height:160px}
+.burbuja{max-width:85%;padding:.45rem .7rem;border-radius:8px;font-size:.92rem;background:#e9eef2}
+.burbuja.yo{align-self:flex-end;background:var(--asfalto);color:#fff}
+#chatOpc{display:flex;flex-wrap:wrap;gap:.4rem;padding:.6rem .75rem;border-top:1px solid var(--linea)}
+#chatOpc form{display:flex;gap:.4rem;width:100%}
+#chatOpc input{flex:1}
