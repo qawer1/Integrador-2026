@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Observatorio de Seguridad Vial · Clúster HPC</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+
+<div id="login">
+  <h1>Observatorio de Seguridad Vial</h1>
+  <p>Resultados del clúster HPC sobre víctimas de siniestros viales en Bogotá D.C.</p>
+  <form id="loginForm">
+    <label for="correo">Correo</label>
+    <input id="correo" type="email" autocomplete="username" required>
+    <label for="clave">Contraseña</label>
+    <input id="clave" type="password" autocomplete="current-password" required>
+    <p class="msg" id="loginMsg" role="alert"></p>
+    <button class="btn" type="submit">Entrar</button>
+  </form>
+</div>
+
+<div id="app" hidden>
+  <header>
+    <h1>Observatorio de Seguridad Vial · Clúster HPC</h1>
+    <div class="quien"><span id="nombre"></span><span class="rol" id="rol"></span><button class="btn sec sm" id="salir" type="button">Salir</button></div>
+  </header>
+
+  <nav id="tabs" aria-label="Secciones">
+    <button type="button" class="tab" data-vista="simular">Simular</button>
+    <button type="button" class="tab" data-vista="historial">Historial</button>
+    <button type="button" class="tab" data-vista="ayuda">Mesa de ayuda</button>
+  </nav>
+
+  <div id="aviso" role="alert" hidden></div>
+
+  <main>
+    <!-- Simular: administrador y desarrollador -->
+    <div class="vista" id="v-simular" hidden>
+      <div id="estado"><span class="luz" id="luz"></span><span id="estadoTxt">Consultando el clúster…</span></div>
+      <div class="dos-col">
+        <section>
+          <h2>Solicitar una simulación</h2>
+          <form id="formSim">
+            <label for="metodo">Método numérico</label>
+            <select id="metodo">
+              <option value="trapecio">Trapecio</option>
+              <option value="simpson">Simpson 1/3</option>
+              <option value="montecarlo">Monte Carlo</option>
+              <option value="newton_raphson">Newton-Raphson</option>
+            </select>
+            <label for="nodos">Modo de ejecución</label>
+            <select id="nodos">
+              <option value="0">Serial (sin MPI)</option>
+              <option value="1">1 nodo de cómputo</option>
+              <option value="2" selected>2 nodos de cómputo</option>
+            </select>
+            <label for="n">Muestras o subintervalos (n)</label>
+            <input id="n" type="number" step="1000" value="1000000" required>
+            <p class="nota" id="nAyuda"></p>
+            <p class="msg" id="simMsg" role="status"></p>
+            <button class="btn" id="btnSim" type="submit">Solicitar simulación</button>
+          </form>
+        </section>
+        <section>
+          <h2>Cola de simulaciones</h2>
+          <div class="scroll"><table>
+            <thead><tr><th>#</th><th>Método</th><th>Estado</th><th></th></tr></thead>
+            <tbody id="cola"></tbody>
+          </table></div>
+        </section>
+      </div>
+    </div>
+
+    <!-- Historial: administrador, desarrollador y usuario -->
+    <div class="vista" id="v-historial" hidden>
+      <section id="listaEjec">
+        <h2>Ejecuciones registradas</h2>
+        <div class="filtros">
+          <div><label for="filtro">Método</label><select id="filtro"><option value="">Todos</option></select></div>
+          <button class="btn sec" id="exportar" type="button">Exportar CSV</button>
+        </div>
+        <div class="scroll"><table>
+          <thead><tr><th>#</th><th>Método</th><th>Modo</th><th>n</th><th>Tiempo total (s)</th><th>Lanzado por</th><th>Fecha</th><th></th></tr></thead>
+          <tbody id="tabla"></tbody>
+        </table></div>
+        <p class="nota" id="vacio" hidden>Aún no hay ejecuciones registradas.</p>
+      </section>
+      <section id="detalle" hidden>
+        <div class="cab-detalle">
+          <h2 id="detalleTitulo"></h2>
+          <button class="btn sec sm" id="detalleCerrar" type="button">Volver a la lista</button>
+        </div>
+        <dl class="datos" id="detalleDatos"></dl>
+        <h3 id="grafTitulo">Tiempo promedio según el modo</h3>
+        <div class="filtros">
+          <div><label for="metrica">Tiempo a graficar</label><select id="metrica">
+            <option value="total">Total</option><option value="computo">Solo cómputo</option><option value="lectura">Lectura de datos</option></select></div>
+        </div>
+        <div class="grafica"><canvas id="grafica" aria-label="Tiempo promedio de ejecución según el modo"></canvas></div>
+        <p id="speedup"></p>
+        <h3>Resultado</h3>
+        <pre id="detalleRes"></pre>
+      </section>
+    </div>
+
+    <!-- Mesa de ayuda: todos los roles -->
+    <div class="vista" id="v-ayuda" hidden>
+      <section>
+        <div class="cab-detalle">
+          <h2 id="casosTitulo">Mesa de ayuda <span class="nota" id="casosAbiertos"></span></h2>
+          <button class="btn" id="nuevoCaso" type="button">Nuevo caso</button>
+        </div>
+        <div class="filtros">
+          <div><label for="fEstado">Estado</label><select id="fEstado">
+            <option value="">Todos</option><option value="abierto">Abiertos</option><option value="en_proceso">En proceso</option>
+            <option value="vencido">Vencidos</option><option value="cerrado">Cerrados</option></select></div>
+          <div><label for="fUrg">Urgencia</label><select id="fUrg">
+            <option value="">Todas</option><option value="alta">Alta</option><option value="media">Media</option><option value="baja">Baja</option></select></div>
+        </div>
+        <div class="scroll"><table>
+          <thead><tr><th>#</th><th>Asunto</th><th>Urgencia</th><th>Estado</th><th>Plazo</th><th>Respuesta</th><th></th></tr></thead>
+          <tbody id="casos"></tbody>
+        </table></div>
+      </section>
+    </div>
+  </main>
+
+  <dialog id="dlgCaso" aria-labelledby="dlgTitulo">
+    <div class="cab-detalle">
+      <h2 id="dlgTitulo"></h2>
+      <button class="btn sec sm" id="dlgCerrar" type="button">Cerrar ventana</button>
+    </div>
+    <dl class="datos" id="dlgDatos"></dl>
+    <h3>Descripción</h3>
+    <p id="dlgDesc"></p>
+    <div id="dlgConvBox"><h3>Conversación con el asistente</h3><pre id="dlgConv"></pre></div>
+    <div id="dlgRespBox"><h3>Respuesta</h3><p id="dlgResp"></p></div>
+    <form id="dlgForm" hidden>
+      <label for="dlgTexto">Respuesta para el usuario</label>
+      <textarea id="dlgTexto" rows="4" maxlength="800"></textarea>
+      <p class="msg" id="dlgMsg" role="alert"></p>
+      <div class="acciones">
+        <button class="btn sec" id="dlgAtender" type="button">Marcar en proceso</button>
+        <button class="btn" type="submit">Cerrar caso con esta respuesta</button>
+      </div>
+    </form>
+  </dialog>
+
+  <button class="chat-btn" id="chatBtn" type="button" aria-label="Abrir el asistente de ayuda">Ayuda</button>
+  <div id="chat" role="dialog" aria-label="Asistente de la mesa de ayuda" hidden>
+    <div class="chat-cab"><strong>Asistente de ayuda</strong><button class="btn sec sm" id="chatCerrar" type="button">Cerrar</button></div>
+    <div id="chatMsgs" aria-live="polite"></div>
+    <div id="chatOpc"></div>
+  </div>
+</div>
+
+<!-- Librerías externas (versión fija) -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.7/dist/umd/supabase.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<!-- Código propio (módulos): hay que abrir la página desde un servidor, no con doble clic -->
+<script type="module" src="js/main.js"></script>
+</body>
+</html>
