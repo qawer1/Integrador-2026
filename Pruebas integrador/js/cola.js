@@ -10,8 +10,10 @@ export async function cargarCola() {
   if (data) pintarCola(data);
 }
 
-// El administrador cancela cualquier solicitud en fila; cada quien, la suya (si se configuró COL_SOLICITANTE).
-const puedeCancelar = s => s.estado === 'pendiente' &&
+// Se puede cancelar lo que está en fila o en ejecución.
+// El administrador cancela cualquiera; cada quien, la suya (si se configuró COL_SOLICITANTE).
+const CANCELABLES = ['pendiente', 'en_ejecucion'];
+const puedeCancelar = s => CANCELABLES.includes(s.estado) &&
   (estado.perfil.rol === 'administrador' || (COL_SOLICITANTE && s[COL_SOLICITANTE] === estado.user.id));
 
 function pintarCola(lista) {
@@ -41,9 +43,17 @@ function pintarCola(lista) {
 export function conectarCancelar(alCambiar) {
   $('#cola').addEventListener('click', async e => {
     const id = e.target.dataset.cancelar;
-    if (!id || !confirm('¿Cancelar la solicitud #' + id + '?')) return;
-    const { error } = await estado.sb.from('solicitudes').update({ estado: 'cancelada' }).eq('id', id);
-    if (error) alert('No se pudo cancelar la solicitud. Puede que ya haya empezado a ejecutarse.');
+    if (!id) return;
+    const corriendo = !!e.target.closest('tr').querySelector('.pill.en_ejecucion');
+    const pregunta = corriendo
+      ? `La solicitud #${id} ya está en ejecución. ¿Marcarla como cancelada y liberar la cola?`
+      : `¿Cancelar la solicitud #${id}?`;
+    if (!confirm(pregunta)) return;
+    // .in('estado', ...) evita pisar una solicitud que terminó justo ahora; .select() devuelve las filas
+    // cambiadas (con RLS, un UPDATE no permitido no da error: simplemente no cambia nada).
+    const { data, error } = await estado.sb.from('solicitudes')
+      .update({ estado: 'cancelada' }).eq('id', id).in('estado', CANCELABLES).select('id');
+    if (error || !data || !data.length) alert('No se pudo cancelar: la solicitud ya terminó o tu rol no lo permite.');
     alCambiar();
   });
 }

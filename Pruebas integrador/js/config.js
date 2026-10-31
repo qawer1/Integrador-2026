@@ -32,4 +32,4 @@ export const N_MAX = 100000000;
 // Si lo escribes (por ejemplo 'usuario_id'), cada persona podrá cancelar sus propias solicitudes
 // en fila. Con null se mantiene lo de antes: solo el administrador cancela.
 // (Además la política RLS de "solicitudes" debe permitir ese UPDATE al dueño.)
-export const COL_SOLICITANTE = null;
+export const COL_SOLICITANTE = 'usuario_id';

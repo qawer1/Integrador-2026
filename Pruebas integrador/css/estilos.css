@@ -96,3 +96,7 @@ textarea{width:100%;padding:.55rem .65rem;border:1px solid var(--linea);border-r
 #chatOpc{display:flex;flex-wrap:wrap;gap:.4rem;padding:.6rem .75rem;border-top:1px solid var(--linea)}
 #chatOpc form{display:flex;gap:.4rem;width:100%}
 #chatOpc input{flex:1}
+/* Botón "Volver a la lista" del detalle del historial: rojo y más grande para que se vea */
+#detalleCerrar{background:var(--error);color:#fff;border:0;padding:.55rem 1.1rem;font-size:1rem;font-weight:700}
+#detalleCerrar:hover{background:#8f1d17}
+#detalleCerrar::before{content:"← "}
