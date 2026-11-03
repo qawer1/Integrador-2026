@@ -28,8 +28,10 @@ export function conectarFormulario(alEnviar) {
       parametros: { nodos: Number($('#nodos').value), n },
     });
     boton.disabled = false;
-    if (error) {
-      msg.textContent = 'No se pudo enviar la solicitud. Verifica que tu rol permita simular.';
+        if (error) {
+      msg.textContent = error.message.includes('Límite')
+        ? error.message
+        : 'No se pudo enviar la solicitud. Verifica que tu rol permita simular.';
       return;
     }
     msg.className = 'msg ok';
