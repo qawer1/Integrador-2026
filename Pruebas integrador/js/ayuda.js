@@ -1,5 +1,5 @@
 // Mesa de ayuda: lista de casos con filtros y una ventana por caso.
-// Cada usuario ve los suyos; el personal (soporte, administrador, desarrollador) ve todos,
+// Cada usuario ve los suyos; el personal (soporte y administrador) ve todos,
 // los atiende y los cierra escribiendo la respuesta en la ventana. Los casos nuevos se abren desde el chatbot.
 import { $, esc, fecha, reportar } from './util.js';
 import { estado, esStaff } from './estado.js';

@@ -38,7 +38,7 @@
   <div id="aviso" role="alert" hidden></div>
 
   <main>
-    <!-- Simular: administrador y desarrollador -->
+    <!-- Simular: administrador y usuario -->
     <div class="vista" id="v-simular" hidden>
       <div id="estado"><span class="luz" id="luz"></span><span id="estadoTxt">Consultando el clúster…</span></div>
       <div class="dos-col">
@@ -61,6 +61,11 @@
             <label for="n">Muestras o subintervalos (n)</label>
             <input id="n" type="number" step="1000" value="1000000" required>
             <p class="nota" id="nAyuda"></p>
+            <label for="ano">Año</label>
+            <input id="ano" type="number" step="1" required>
+            <p class="nota" id="anoAyuda"></p>
+            <div id="filtrosSim"></div>
+            
             <p class="msg" id="simMsg" role="status"></p>
             <button class="btn" id="btnSim" type="submit">Solicitar simulación</button>
           </form>
@@ -75,16 +80,18 @@
       </div>
     </div>
 
-    <!-- Historial: administrador, desarrollador y usuario -->
+    <!-- Historial: administrador y usuario -->
     <div class="vista" id="v-historial" hidden>
       <section id="listaEjec">
         <h2>Ejecuciones registradas</h2>
         <div class="filtros">
           <div><label for="filtro">Método</label><select id="filtro"><option value="">Todos</option></select></div>
+          <div><label for="fAno">Año</label><select id="fAno"><option value="">Todos</option></select></div>
+          
           <button class="btn sec" id="exportar" type="button">Exportar CSV</button>
         </div>
         <div class="scroll"><table>
-          <thead><tr><th>#</th><th>Método</th><th>Modo</th><th>Tiempo (s)</th><th>Lanzado por</th><th>Fecha</th><th></th></tr></thead>
+          <thead><tr><th>#</th><th>Método</th><th>Modo</th><th>n</th><th>Año</th><th>Filtros</th><th>Tiempo total (s)</th><th>Lanzado por</th><th>Fecha</th><th></th></tr></thead>
           <tbody id="tabla"></tbody>
         </table></div>
         <p class="nota" id="vacio" hidden>Aún no hay ejecuciones registradas.</p>
@@ -95,11 +102,16 @@
           <button class="btn sec sm" id="detalleCerrar" type="button">Volver a la lista</button>
         </div>
         <dl class="datos" id="detalleDatos"></dl>
-        <h3>Tiempo promedio de este método según el modo</h3>
+        <h3 id="grafTitulo">Tiempo promedio según el modo</h3>
+        <div class="filtros">
+          <div><label for="metrica">Tiempo a graficar</label><select id="metrica">
+            <option value="total">Total</option><option value="computo">Solo cómputo</option><option value="lectura">Lectura de datos</option></select></div>
+        </div>
         <div class="grafica"><canvas id="grafica" aria-label="Tiempo promedio de ejecución según el modo"></canvas></div>
         <p id="speedup"></p>
         <h3>Resultado</h3>
         <pre id="detalleRes"></pre>
+        <div id="detalleSerie"></div>
       </section>
     </div>
 
