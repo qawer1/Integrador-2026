@@ -11,22 +11,32 @@
 <body>
 
 <div id="login">
-  <h1>Observatorio de Seguridad Vial</h1>
-  <p>Resultados del clúster HPC sobre víctimas de siniestros viales en Bogotá D.C.</p>
-  <form id="loginForm">
-    <label for="correo">Correo</label>
-    <input id="correo" type="email" autocomplete="username" required>
-    <label for="clave">Contraseña</label>
-    <input id="clave" type="password" autocomplete="current-password" required>
-    <p class="msg" id="loginMsg" role="alert"></p>
-    <button class="btn" type="submit">Entrar</button>
-  </form>
+  <div class="login-caja">
+    <div class="login-lado">
+      <span class="etq">Clúster HPC</span>
+      <h1>Observatorio de Seguridad Vial</h1>
+      <p>Resultados del clúster HPC sobre víctimas de siniestros viales en Bogotá D.C.</p>
+    </div>
+    <div class="login-form">
+      <h2>Iniciar sesión</h2>
+      <p class="nota">Las cuentas las crea el administrador.</p>
+      <form id="loginForm">
+        <label for="correo">Correo</label>
+        <input id="correo" type="email" autocomplete="username" required>
+        <label for="clave">Contraseña</label>
+        <input id="clave" type="password" autocomplete="current-password" required>
+        <p class="msg" id="loginMsg" role="alert"></p>
+        <button class="btn" type="submit">Entrar</button>
+      </form>
+    </div>
+  </div>
 </div>
 
 <div id="app" hidden>
   <header>
     <h1>Observatorio de Seguridad Vial · Clúster HPC</h1>
-    <div class="quien"><span id="nombre"></span><span class="rol" id="rol"></span><button class="btn sec sm" id="salir" type="button">Salir</button></div>
+    <div class="quien"><label class="tema"><span>Tema</span><select id="tema" aria-label="Tema de color">
+        <option value="atardecer">Atardecer</option><option value="indigo">Índigo</option><option value="oceano">Océano</option><option value="bosque">Bosque</option></select></label><span id="nombre"></span><span class="rol" id="rol"></span><button class="btn sec sm" id="salir" type="button">Salir</button></div>
   </header>
 
   <nav id="tabs" aria-label="Secciones">
@@ -40,34 +50,67 @@
   <main>
     <!-- Simular: administrador y usuario -->
     <div class="vista" id="v-simular" hidden>
-      <div id="estado"><span class="luz" id="luz"></span><span id="estadoTxt">Consultando el clúster…</span></div>
+
+      <div class="hero">
+        <div>
+          <h2>Simula con el clúster</h2>
+          <p>Elige el método, los datos y cuántos nodos usar. Cuando termine, el resultado queda en el Historial.</p>
+        </div>
+        <div id="estado"><span class="luz" id="luz"></span><span id="estadoTxt">Consultando el clúster…</span></div>
+      </div>
+
+      <ol class="pasos">
+        <li><span class="num">1</span><div><b>Configura</b>Método, modo de ejecución y datos.</div></li>
+        <li><span class="num">2</span><div><b>Solicita</b>La simulación entra a la cola.</div></li>
+        <li><span class="num">3</span><div><b>Revisa</b>Tiempos y resultados en el Historial.</div></li>
+      </ol>
+
       <div class="dos-col">
         <section>
           <h2>Solicitar una simulación</h2>
           <form id="formSim">
-            <label for="metodo">Método numérico</label>
-            <select id="metodo">
-              <option value="trapecio">Trapecio</option>
-              <option value="simpson">Simpson 1/3</option>
-              <option value="montecarlo">Monte Carlo</option>
-              <option value="newton_raphson">Newton-Raphson</option>
-            </select>
-            <label for="nodos">Modo de ejecución</label>
-            <select id="nodos">
-              <option value="0">Serial (sin MPI)</option>
-              <option value="1">1 nodo de cómputo</option>
-              <option value="2" selected>2 nodos de cómputo</option>
-            </select>
-            <label for="n">Muestras o subintervalos (n)</label>
-            <input id="n" type="number" step="1000" value="1000000" required>
-            <p class="nota" id="nAyuda"></p>
-            <label for="ano">Año</label>
-            <input id="ano" type="number" step="1" required>
-            <p class="nota" id="anoAyuda"></p>
-            <div id="filtrosSim"></div>
-            
+            <fieldset>
+              <legend>Cómo se calcula</legend>
+              <div class="grid2">
+                <div>
+                  <label for="metodo">Método numérico</label>
+                  <select id="metodo">
+                    <option value="trapecio">Trapecio</option>
+                    <option value="simpson">Simpson 1/3</option>
+                    <option value="montecarlo">Monte Carlo</option>
+                    <option value="newton_raphson">Newton-Raphson</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="nodos">Modo de ejecución</label>
+                  <select id="nodos">
+                    <option value="0">Serial (sin MPI)</option>
+                    <option value="1">1 nodo de cómputo</option>
+                    <option value="2" selected>2 nodos de cómputo</option>
+                  </select>
+                </div>
+              </div>
+            </fieldset>
+
+            <fieldset>
+              <legend>Con qué datos</legend>
+              <div class="grid2">
+                <div>
+                  <label for="n">Muestras o subintervalos (n)</label>
+                  <input id="n" type="number" step="1000" value="1000000" required>
+                  <p class="nota" id="nAyuda"></p>
+                </div>
+                <div>
+                  <label for="ano">Año</label>
+                  <input id="ano" type="number" step="1" required>
+                  <p class="nota" id="anoAyuda"></p>
+                </div>
+              </div>
+              <div id="filtrosSim"></div>
+            </fieldset>
+
             <p class="msg" id="simMsg" role="status"></p>
-            <button class="btn" id="btnSim" type="submit">Solicitar simulación</button>
+            <button class="btn grande" id="btnSim" type="submit">Solicitar simulación</button>
           </form>
         </section>
         <section>
@@ -91,7 +134,7 @@
           <button class="btn sec" id="exportar" type="button">Exportar CSV</button>
         </div>
         <div class="scroll"><table>
-          <thead><tr><th>#</th><th>Método</th><th>Modo</th><th>n</th><th>Año</th><th>Filtros</th><th>Tiempo total (s)</th><th>Lanzado por</th><th>Fecha</th><th></th></tr></thead>
+          <thead><tr><th>#</th><th>Método</th><th>Modo</th><th>Tiempo total (s)</th><th>Lanzada por</th><th></th></tr></thead>
           <tbody id="tabla"></tbody>
         </table></div>
         <p class="nota" id="vacio" hidden>Aún no hay ejecuciones registradas.</p>
@@ -102,15 +145,19 @@
           <button class="btn sec sm" id="detalleCerrar" type="button">Volver a la lista</button>
         </div>
         <dl class="datos" id="detalleDatos"></dl>
+        <div id="bloqueNewton" hidden></div>
+        <div id="bloqueGen">
         <h3 id="grafTitulo">Tiempo promedio según el modo</h3>
         <div class="filtros">
           <div><label for="metrica">Tiempo a graficar</label><select id="metrica">
             <option value="total">Total</option><option value="computo">Solo cómputo</option><option value="lectura">Lectura de datos</option></select></div>
         </div>
         <div class="grafica"><canvas id="grafica" aria-label="Tiempo promedio de ejecución según el modo"></canvas></div>
-        <p id="speedup"></p>
-        <h3>Resultado</h3>
-        <pre id="detalleRes"></pre>
+        <div id="speedup" class="speedups"></div>
+        </div>
+        <div id="rendimiento"></div>
+        <div id="bloqueRes"><h3>Resultado</h3>
+        <pre id="detalleRes"></pre></div>
         <div id="detalleSerie"></div>
       </section>
     </div>
@@ -171,5 +218,12 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <!-- Código propio (módulos): hay que abrir la página desde un servidor, no con doble clic -->
 <script type="module" src="js/main.js"></script>
+<script>
+/* Tema de color: se recuerda en este navegador */
+(function(){var s=document.getElementById('tema'),t='atardecer';
+try{t=localStorage.getItem('tema')||t}catch(e){}
+document.documentElement.dataset.tema=t;
+if(s){s.value=t;s.addEventListener('change',function(){document.documentElement.dataset.tema=s.value;try{localStorage.setItem('tema',s.value)}catch(e){}document.dispatchEvent(new Event('tema'))})}})();
+</script>
 </body>
 </html>
