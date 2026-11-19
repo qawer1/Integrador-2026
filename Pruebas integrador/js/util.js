@@ -1,5 +1,5 @@
 // Funciones de apoyo usadas por varios módulos.
-import { METODOS } from './config.js';
+import { METODOS, etiquetaFiltro } from './config.js';
 
 export const $ = s => document.querySelector(s);
 
@@ -18,3 +18,10 @@ export function reportar(clave, error) {
   a.hidden = fallos.size === 0;
   a.textContent = fallos.size ? `No se pudo cargar: ${[...fallos].join(', ')}. Se reintenta solo cada 10 segundos.` : '';
 }
+
+// Año y sexo de una ejecución: columnas "ano" / "sexo" o, si no existen, dentro de "parametros".
+const val = v => (v == null || v === '' ? null : v);
+export const anoDe = r => val(r.ano) ?? val(r.parametros && r.parametros.ano) ?? (r.anos_desde != null && r.anos_desde === r.anos_hasta ? r.anos_desde : null);
+export const filtrosDe = r => (r.filtros && typeof r.filtros === 'object' ? r.filtros : {});
+export const textoFiltros = r => Object.entries(filtrosDe(r)).map(([k, v]) => etiquetaFiltro(k, v)).join(' · ');
+export const claveFiltros = r => Object.entries(filtrosDe(r)).sort(([a], [b]) => (a < b ? -1 : 1)).map(([k, v]) => k + '=' + v).join('|');

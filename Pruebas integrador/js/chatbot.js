@@ -11,8 +11,6 @@ const TEMAS = [
     respuesta: 'El historial se actualiza solo cada 10 segundos. Si está vacío, puede que aún no se haya ejecutado ninguna simulación o que el filtro de método esté ocultando los datos: elige "Todos" y recarga la página.' },
   { texto: 'Mi solicitud no avanza', tipo: 'incidente', vista: 'simular',
     respuesta: 'El clúster ejecuta una simulación a la vez, en orden de llegada, y cada una dura máximo una hora. Mira el semáforo y la cola en la pestaña Simular: si hay una en ejecución, tu solicitud espera su turno.' },
-  { texto: 'No puedo pedir una simulación', tipo: 'solicitud', vista: 'historial', sinVista: 'simular',
-    respuesta: 'Solo los roles administrador y desarrollador pueden solicitar simulaciones. El rol usuario consulta resultados. Si necesitas ese permiso, abre un caso.' },
   { texto: 'Otro problema', tipo: 'incidente', respuesta: null },
 ];
 

@@ -1,5 +1,5 @@
 // Mesa de ayuda: lista de casos con filtros y una ventana por caso.
-// Cada usuario ve los suyos; el personal (soporte, administrador, desarrollador) ve todos,
+// Cada usuario ve los suyos; el personal (soporte y administrador) ve todos,
 // los atiende y los cierra escribiendo la respuesta en la ventana. Los casos nuevos se abren desde el chatbot.
 import { $, esc, fecha, reportar } from './util.js';
 import { estado, esStaff } from './estado.js';
@@ -48,10 +48,18 @@ function pintarCasos() {
     const plazo = c.estado === 'cerrado' ? 'Cerrado ' + fecha(c.cerrado_en) : vencido ? 'Vencido' : 'Hasta ' + fecha(vence(c));
     const resp = c.respuesta ? (c.respuesta.length > 40 ? c.respuesta.slice(0, 40) + '…' : c.respuesta) : '—';
     return `<tr class="${vencido ? 'vencido' : ''}"><td class="num">${esc(c.id)}</td><td>${esc(c.asunto)}</td>
-      <td>${esc(URGENCIA[c.urgencia])}</td><td><span class="pill ${esc(c.estado)}">${esc(ESTADO_CASO[c.estado])}</span></td>
+      <td><span class="pill urg ${esc(c.urgencia)}">${esc(URGENCIA[c.urgencia])}</span></td><td><span class="pill ${esc(c.estado)}">${esc(ESTADO_CASO[c.estado])}</span></td>
       <td>${esc(plazo)}</td><td>${esc(resp)}</td>
       <td><button class="btn sec sm" data-abrir="${esc(c.id)}">${esStaff() && c.estado !== 'cerrado' ? 'Atender' : 'Ver'}</button></td></tr>`;
   }).join('') : `<tr><td colspan="7">${lista.length ? 'Ningún caso coincide con los filtros.' : 'Aún no hay casos.'}</td></tr>`;
+}
+
+// La conversación se guarda como texto ("Asistente: ..." / "Usuario: ..."); aquí se muestra como burbujas.
+function burbujas(texto) {
+  return texto.split('\n').filter(Boolean).map(l => {
+    const yo = l.startsWith('Usuario: ');
+    return `<div class="burbuja${yo ? ' yo' : ''}">${esc(l.replace(/^(Usuario|Asistente): /, ''))}</div>`;
+  }).join('');
 }
 
 // ---- Ventana de un caso ----
@@ -69,7 +77,7 @@ function abrirVentana(id) {
   ].map(([k, v]) => `<div><dt>${esc(k)}</dt><dd>${esc(v)}</dd></div>`).join('');
   $('#dlgDesc').textContent = c.descripcion || '—';
   $('#dlgConvBox').hidden = !c.conversacion;
-  $('#dlgConv').textContent = c.conversacion || '';
+  $('#dlgConv').innerHTML = c.conversacion ? burbujas(c.conversacion) : '';
   const atendible = esStaff() && c.estado !== 'cerrado';
   $('#dlgRespBox').hidden = atendible;           // si se puede atender, se muestra el formulario en su lugar
   $('#dlgResp').textContent = c.respuesta || (c.estado === 'cerrado' ? '—' : 'Aún no hay respuesta. Te responderán dentro del plazo.');
