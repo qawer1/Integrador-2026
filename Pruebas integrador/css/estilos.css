@@ -209,3 +209,147 @@ pre#dlgConv .burbuja{max-width:90%}
 ul.interp{margin:.25rem 0 0;padding-left:1.2rem}
 ul.interp li{margin:.35rem 0}
 tr.rend-sel td{background:var(--t2)!important;font-weight:700}
+/* =========================================================
+   TARJETAS DE ANÁLISIS DE MÉTODOS NUMÉRICOS
+========================================================= */
+
+#bloqueMetodo {
+  margin: 22px 0;
+}
+
+#bloqueMetodo > h3 {
+  margin-bottom: 16px;
+}
+
+.metodo-tarjetas {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 12px;
+  margin: 16px 0;
+}
+
+.metodo-tarjeta {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px;
+  border: 1px solid var(--linea);
+  border-radius: 12px;
+  background: var(--superficie, transparent);
+  min-width: 0;
+}
+
+.metodo-etiqueta {
+  color: var(--muted, var(--tinta));
+  font-size: 0.88rem;
+}
+
+.metodo-tarjeta strong {
+  font-size: 1.2rem;
+  overflow-wrap: anywhere;
+}
+
+.metodo-tarjeta small {
+  color: var(--muted, var(--tinta));
+  line-height: 1.4;
+}
+
+.metodo-explicacion {
+  padding: 16px;
+  border-left: 3px solid var(--primario);
+  border-radius: 8px;
+  background: var(--superficie, transparent);
+  line-height: 1.6;
+}
+
+.metodo-explicacion h4 {
+  margin: 0 0 8px;
+}
+
+.metodo-explicacion p {
+  margin: 8px 0;
+}
+
+@media (max-width: 600px) {
+  .metodo-tarjetas {
+    grid-template-columns: 1fr;
+  }
+
+  .metodo-tarjeta strong {
+    font-size: 1.1rem;
+  }
+}
+.metodo-grafica {
+  margin-top: 24px;
+  padding: 18px;
+  border: 1px solid var(--linea);
+  border-radius: 12px;
+}
+
+.metodo-grafica h4 {
+  margin-top: 0;
+}
+
+.grafica-metodo {
+  position: relative;
+  width: 100%;
+  height: 320px;
+  margin-top: 14px;
+}
+
+@media (max-width: 600px) {
+  .grafica-metodo {
+    height: 260px;
+  }
+}
+
+/* Contenedor de las gráficas de Monte Carlo */
+.mc-graficas {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 24px;
+    width: 100%;
+    min-width: 0;
+    margin-top: 24px;
+}
+
+/* Cada gráfica ocupa todo el ancho */
+.mc-graficas .metodo-grafica {
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    padding: 20px;
+    margin: 0;
+}
+
+/* Tamaño de los gráficos */
+.mc-graficas canvas {
+    display: block;
+    width: 100% !important;
+    height: 320px !important;
+    max-width: 100%;
+}
+
+/* Adaptación a pantallas pequeñas */
+@media (max-width: 700px) {
+    .mc-graficas canvas {
+        height: 260px !important;
+    }
+}
+
+/* Gráfica específica del método Trapecio */
+
+.metodo-grafica-ancha {
+    grid-column: 1 / -1;
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+}
+
+.grafica-trapecio {
+    position: relative;
+    width: 100%;
+    height: 340px;
+    min-height: 280px;
+}
