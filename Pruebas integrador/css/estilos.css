@@ -209,6 +209,7 @@ pre#dlgConv .burbuja{max-width:90%}
 ul.interp{margin:.25rem 0 0;padding-left:1.2rem}
 ul.interp li{margin:.35rem 0}
 tr.rend-sel td{background:var(--t2)!important;font-weight:700}
+
 /* =========================================================
    TARJETAS DE ANÁLISIS DE MÉTODOS NUMÉRICOS
 ========================================================= */
@@ -279,6 +280,7 @@ tr.rend-sel td{background:var(--t2)!important;font-weight:700}
     font-size: 1.1rem;
   }
 }
+
 .metodo-grafica {
   margin-top: 24px;
   padding: 18px;
@@ -352,4 +354,27 @@ tr.rend-sel td{background:var(--t2)!important;font-weight:700}
     width: 100%;
     height: 340px;
     min-height: 280px;
+}
+
+/* =========================================================
+   ARREGLO: GRÁFICAS A TODO EL ANCHO (Monte Carlo, Simpson, Trapecio)
+   Deben ir al final para ganar sobre las reglas anteriores.
+========================================================= */
+
+/* Las gráficas ocupan toda la fila de la cuadrícula de tarjetas */
+.metodo-tarjetas > .metodo-grafica {
+  grid-column: 1 / -1;   /* de la primera a la última columna */
+  min-width: 0;
+  margin-top: 8px;
+}
+
+/* Altura generosa y legible para el canvas */
+.metodo-tarjetas > .metodo-grafica .grafica-metodo {
+  height: 380px;
+}
+
+@media (max-width: 600px) {
+  .metodo-tarjetas > .metodo-grafica .grafica-metodo {
+    height: 280px;
+  }
 }
